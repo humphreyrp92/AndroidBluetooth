@@ -2,6 +2,8 @@ package ai.rotor.androidbluetooth;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -19,13 +21,12 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "Debug - MainActivity";
+    private static final String TAG = "Debug";
     private TextView mTvStatus;
     private Button mBtnActivate;
     private Button mBtnPaired;
     private Button mBtnScan;
-
-    private ProgressBar mProgressBar;
+    private ProgressBar mScanProgressBar;
 
     private ArrayList<BluetoothDevice> mDeviceList = new ArrayList<>();
 
@@ -40,8 +41,13 @@ public class MainActivity extends AppCompatActivity {
         mBtnActivate = (Button) findViewById(R.id.btnActivate);
         mBtnPaired = (Button) findViewById(R.id.btnPaired);
         mBtnScan = (Button) findViewById(R.id.btnScan);
+        mScanProgressBar = (ProgressBar) findViewById(R.id.scanProgressBar);
+        mScanProgressBar.setVisibility(View.INVISIBLE);
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+
+
 
         if (mBluetoothAdapter == null) {
             showUnsupported();
@@ -95,7 +101,9 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+        filter.addAction(BluetoothDevice.ACTION_FOUND);
 
+        registerReceiver(mReceiver, filter);
     }
 
     private void showUnsupported() {
@@ -113,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showDisabled() {
+        showToast("Disabled");
         mTvStatus.setText("Bluetooth is OFF");
         mTvStatus.setTextColor(Color.RED);
 
@@ -134,10 +143,36 @@ public class MainActivity extends AppCompatActivity {
         mBtnScan.setEnabled(true);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // Need to flesh this out
-        showEnabled();
-    }
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        private static final String TAG = "Debug";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            Log.d(TAG, action);
+
+            if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
+                Log.d(TAG, "Enabling Bluetooth");
+                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
+                if (state == BluetoothAdapter.STATE_ON) {
+                    showToast("Enabled");
+                    showEnabled();
+                }
+            } else if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
+                Log.d(TAG, "Starting Discovery");
+                mDeviceList = new ArrayList<>();
+                mScanProgressBar.setVisibility(View.VISIBLE);
+            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+                Log.d(TAG, "Ending Discovery");
+                mScanProgressBar.setVisibility(View.INVISIBLE);
+                Intent newIntent = new Intent(MainActivity.this, DeviceListActivity.class);
+                newIntent.putParcelableArrayListExtra("device.list", mDeviceList);
+                startActivity(newIntent);
+            } else if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                mDeviceList.add(device);
+                showToast("Found device " + device.getName());
+            }
+        }
+    };
 }
