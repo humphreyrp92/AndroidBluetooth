@@ -1,5 +1,6 @@
 package ai.rotor.androidbluetooth;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +24,7 @@ import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "Debug";
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 1;
     private TextView mTvStatus;
     private Button mBtnActivate;
     private Button mBtnPaired;
@@ -45,7 +48,9 @@ public class MainActivity extends AppCompatActivity {
         mScanProgressBar.setVisibility(View.INVISIBLE);
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
 
 
 
@@ -152,26 +157,23 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, action);
 
             if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
-                Log.d(TAG, "Enabling Bluetooth");
                 final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
                 if (state == BluetoothAdapter.STATE_ON) {
                     showToast("Enabled");
                     showEnabled();
                 }
             } else if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
-                Log.d(TAG, "Starting Discovery");
                 mDeviceList = new ArrayList<>();
                 mScanProgressBar.setVisibility(View.VISIBLE);
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-                Log.d(TAG, "Ending Discovery");
                 mScanProgressBar.setVisibility(View.INVISIBLE);
                 Intent newIntent = new Intent(MainActivity.this, DeviceListActivity.class);
                 newIntent.putParcelableArrayListExtra("device.list", mDeviceList);
                 startActivity(newIntent);
             } else if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                Log.d(TAG, "Found Bluetooth device at address " + device.getAddress());
                 mDeviceList.add(device);
-                showToast("Found device " + device.getName());
             }
         }
     };
