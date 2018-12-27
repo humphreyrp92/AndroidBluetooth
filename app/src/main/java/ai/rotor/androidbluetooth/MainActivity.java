@@ -48,9 +48,11 @@ public class MainActivity extends AppCompatActivity {
         mScanProgressBar.setVisibility(View.INVISIBLE);
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        mBluetoothAdapter.setName("Shield Tablet");
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                 MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
+
 
 
 
@@ -146,6 +148,14 @@ public class MainActivity extends AppCompatActivity {
 
         mBtnPaired.setEnabled(true);
         mBtnScan.setEnabled(true);
+    }
+
+    private void showPaired() {
+
+    }
+
+    private void showConnected() {
+
     }
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
