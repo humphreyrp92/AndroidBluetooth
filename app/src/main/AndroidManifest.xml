@@ -20,8 +20,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".DeviceListActivity">
-        </activity>
+        <activity android:name=".DeviceListActivity"></activity>
+
+        <activity android:name=".ConnectionActivity"></activity>
     </application>
 
 </manifest>

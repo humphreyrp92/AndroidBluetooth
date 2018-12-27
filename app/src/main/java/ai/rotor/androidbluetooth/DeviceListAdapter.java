@@ -16,7 +16,8 @@ import java.util.List;
 public class DeviceListAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private List<BluetoothDevice> mData;
-    private OnPairButtonClickListener mListener;
+    private OnPairButtonClickListener mPairListener;
+    private OnConnectButtonClickListener mConnectListener;
 
     public DeviceListAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -27,7 +28,11 @@ public class DeviceListAdapter extends BaseAdapter {
     }
 
     public void setListener(OnPairButtonClickListener listener) {
-        mListener = listener;
+        mPairListener = listener;
+    }
+
+    public void setListener(OnConnectButtonClickListener listener) {
+        mConnectListener = listener;
     }
 
     public int getCount() {
@@ -51,6 +56,7 @@ public class DeviceListAdapter extends BaseAdapter {
             holder.nameTV = (TextView) convertView.findViewById(R.id.tv_name);
             holder.addressTv = (TextView) convertView.findViewById(R.id.tv_address);
             holder.pairBTN = (Button) convertView.findViewById(R.id.btn_pair);
+            holder.connectBTN = (Button) convertView.findViewById(R.id.btn_connect);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -67,12 +73,21 @@ public class DeviceListAdapter extends BaseAdapter {
         holder.addressTv.setText(device.getAddress());
 
         Boolean paired = (device.getBondState() == BluetoothDevice.BOND_BONDED);
-        holder.pairBTN.setText((device.getBondState() == BluetoothDevice.BOND_BONDED) ? "Unpair" : "Pair");
+        holder.pairBTN.setText(paired ? "Unpair" : "Pair");
+        holder.connectBTN.setEnabled(paired ? true : false);
         holder.pairBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mListener != null) {
-                    mListener.onPairButtonClick(position);
+                if (mPairListener != null) {
+                    mPairListener.onPairButtonClick(position);
+                }
+            }
+        });
+        holder.connectBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mConnectListener != null) {
+                    mConnectListener.onConnectButtonClick(position);
                 }
             }
         });
@@ -83,10 +98,15 @@ public class DeviceListAdapter extends BaseAdapter {
     static class ViewHolder {
         TextView nameTV;
         TextView addressTv;
-        TextView pairBTN;
+        Button pairBTN;
+        Button connectBTN;
     }
 
     public interface OnPairButtonClickListener {
         void onPairButtonClick(int position);
+    }
+
+    public interface OnConnectButtonClickListener {
+        void onConnectButtonClick(int position);
     }
 }

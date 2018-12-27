@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -14,7 +15,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 public class DeviceListActivity extends Activity {
-    private static final String TAG = "Debug";
+    private static final String TAG = "Debug, DevListAct: ";
     private DeviceListAdapter mAdapter;
     private ListView mListView;
     private ArrayList<BluetoothDevice> mDeviceList;
@@ -32,6 +33,7 @@ public class DeviceListActivity extends Activity {
         mAdapter.setListener(new DeviceListAdapter.OnPairButtonClickListener() {
             @Override
             public void onPairButtonClick(int position) {
+                Log.d(TAG, "Pair button pressed");
                 BluetoothDevice device = mDeviceList.get(position);
 
                 if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
@@ -40,6 +42,18 @@ public class DeviceListActivity extends Activity {
                     showToast("Pairing...");
                     pairDevice(device);
                 }
+            }
+        });
+
+        mAdapter.setListener(new DeviceListAdapter.OnConnectButtonClickListener() {
+
+            @Override
+            public void onConnectButtonClick(int position) {
+                Log.d(TAG, "Connect button pressed");
+                BluetoothDevice device = mDeviceList.get(position);
+                Intent intent = new Intent(DeviceListActivity.this, ConnectionActivity.class);
+                intent.putExtra("PairedDevice", device);
+                startActivity(intent);
             }
         });
 

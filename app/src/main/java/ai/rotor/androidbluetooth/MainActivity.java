@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "Debug";
+    private static final String TAG = "Debug, MainActivity:";
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 1;
     private TextView mTvStatus;
     private Button mBtnActivate;
