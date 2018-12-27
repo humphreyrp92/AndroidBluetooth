@@ -24,6 +24,9 @@ public class ConnectionActivity extends Activity {
         mPairedDevice = getIntent().getExtras().getParcelable("PairedDevice");
 
         showConnecting();
+
+        ConnectThread connectThread = new ConnectThread(mPairedDevice);
+        connectThread.start();
     }
 
     private void showConnecting() {
