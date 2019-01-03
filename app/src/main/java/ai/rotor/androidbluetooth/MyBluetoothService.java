@@ -48,7 +48,7 @@ public class MyBluetoothService {
         }
 
         public void run() {
-            mBuffer = new Byte[1024];
+            mBuffer = new byte[1024];
             int numBytes;
 
             while (true) {
