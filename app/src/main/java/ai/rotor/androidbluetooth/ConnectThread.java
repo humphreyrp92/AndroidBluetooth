@@ -10,7 +10,7 @@ import java.io.IOException;
 import static ai.rotor.androidbluetooth.RotorUtils.ROTOR_UUID;
 
 public class ConnectThread extends Thread {
-    private static final String TAG = "Debug, ConThread: ";
+    private static final String TAG = "Debug, ConThread";
     private final BluetoothSocket mSocket;
     private final BluetoothDevice mDevice;
     private BluetoothAdapter mBluetoothAdapter;
@@ -46,6 +46,8 @@ public class ConnectThread extends Thread {
         }
 
         Log.d(TAG, "Connection attempt succeeded!");
+
+        // manageConnectedThread(socket);
 
     }
 
