@@ -46,6 +46,7 @@ public class ConnectThread extends Thread {
         }
 
         Log.d(TAG, "Connection attempt succeeded!");
+        // manageMyConnectedSocket(mSocket)
 
         // manageConnectedThread(socket);
 
