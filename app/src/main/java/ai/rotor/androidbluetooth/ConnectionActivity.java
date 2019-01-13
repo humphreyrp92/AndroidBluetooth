@@ -18,7 +18,8 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
     private static final String TAG = "Debug, ConnectionAct";
     private ProgressBar mProgressBar;
     private TextView mStatusTv;
-    private Button mFwdBtn, mRevBtn, mRightBtn, mLeftBtn;
+    private Button mFwdBtn, mFwdLftBtn, mFwdRtBtn, mNeutLftBtn, mNeutBtn, mNeutRtBtn,
+        mRevLftBtn, mRevBtn, mRevRtBtn;
     private BluetoothDevice mPairedDevice;
     private BluetoothService mBluetoothService;
 
@@ -29,10 +30,15 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
 
         mProgressBar = (ProgressBar) findViewById(R.id.connectingProgressBar);
         mStatusTv = (TextView) findViewById(R.id.statusTv);
+        mFwdLftBtn = (Button) findViewById(R.id.fwdLeftBtn);
         mFwdBtn = (Button) findViewById(R.id.fwdBtn);
+        mFwdRtBtn = (Button) findViewById(R.id.fwdRightBtn);
+        mNeutLftBtn = (Button) findViewById(R.id.leftBtn);
+        mNeutBtn = (Button) findViewById(R.id.neutralBtn);
+        mNeutRtBtn = (Button) findViewById(R.id.rightBtn);
+        mRevLftBtn = (Button) findViewById(R.id.revLeftBtn);
         mRevBtn = (Button) findViewById(R.id.revBtn);
-        mLeftBtn = (Button) findViewById(R.id.leftBtn);
-        mRightBtn = (Button) findViewById(R.id.rightBtn);
+        mRevRtBtn = (Button) findViewById(R.id.revRightBtn);
 
         mPairedDevice = getIntent().getExtras().getParcelable("PairedDevice");
 
@@ -45,28 +51,43 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
         intentFilter.addAction("streamsAcquired");
         LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, intentFilter);
 
+        mFwdLftBtn.setOnClickListener(this);
         mFwdBtn.setOnClickListener(this);
+        mFwdRtBtn.setOnClickListener(this);
+        mNeutLftBtn.setOnClickListener(this);
+        mNeutBtn.setOnClickListener(this);
+        mNeutRtBtn.setOnClickListener(this);
+        mRevLftBtn.setOnClickListener(this);
         mRevBtn.setOnClickListener(this);
-        mLeftBtn.setOnClickListener(this);
-        mRightBtn.setOnClickListener(this);
+        mRevRtBtn.setOnClickListener(this);
     }
 
     private void showConnecting() {
         mProgressBar.setVisibility(View.VISIBLE);
         mStatusTv.setText("Connecting to " + mPairedDevice.getName() + "...");
+        mFwdLftBtn.setEnabled(false);
         mFwdBtn.setEnabled(false);
+        mFwdRtBtn.setEnabled(false);
+        mNeutLftBtn.setEnabled(false);
+        mNeutBtn.setEnabled(false);
+        mNeutRtBtn.setEnabled(false);
+        mRevLftBtn.setEnabled(false);
         mRevBtn.setEnabled(false);
-        mLeftBtn.setEnabled(false);
-        mRightBtn.setEnabled(false);
+        mRevRtBtn.setEnabled(false);
     }
 
     private void showConnected() {
         mProgressBar.setVisibility(View.INVISIBLE);
         mStatusTv.setText("Connected to " + mPairedDevice.getName());
+        mFwdLftBtn.setEnabled(true);
         mFwdBtn.setEnabled(true);
+        mFwdRtBtn.setEnabled(true);
+        mNeutLftBtn.setEnabled(true);
+        mNeutBtn.setEnabled(true);
+        mNeutRtBtn.setEnabled(true);
+        mRevLftBtn.setEnabled(true);
         mRevBtn.setEnabled(true);
-        mLeftBtn.setEnabled(true);
-        mRightBtn.setEnabled(true);
+        mRevRtBtn.setEnabled(true);
     }
 
     BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -81,27 +102,56 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.fwdLeftBtn: {
+                String cmdString = "F100, L100";
+                mBluetoothService.write(cmdString.getBytes());
+                Log.d(TAG, "outgoing message: " + cmdString);
+                break;
+            }
             case R.id.fwdBtn: {
-
-                String cmdString = "FWD";
+                String cmdString = "F100, N000";
                 mBluetoothService.write(cmdString.getBytes());
                 Log.d(TAG, "outgoing message: " + cmdString);
                 break;
             }
-            case R.id.revBtn: {
-                String cmdString = "REV";
-                mBluetoothService.write(cmdString.getBytes());
-                Log.d(TAG, "outgoing message: " + cmdString);
-                break;
-            }
-            case R.id.rightBtn: {
-                String cmdString = "RIGHT";
+            case R.id.fwdRightBtn: {
+                String cmdString = "F100, R100";
                 mBluetoothService.write(cmdString.getBytes());
                 Log.d(TAG, "outgoing message: " + cmdString);
                 break;
             }
             case R.id.leftBtn: {
-                String cmdString = "LEFT";
+                String cmdString = "N000, L100";
+                mBluetoothService.write(cmdString.getBytes());
+                Log.d(TAG, "outgoing message: " + cmdString);
+                break;
+            }
+            case R.id.neutralBtn: {
+                String cmdString = "N000, N000";
+                mBluetoothService.write(cmdString.getBytes());
+                Log.d(TAG, "outgoing message: " + cmdString);
+                break;
+            }
+            case R.id.rightBtn: {
+                String cmdString = "N000, R100";
+                mBluetoothService.write(cmdString.getBytes());
+                Log.d(TAG, "outgoing message: " + cmdString);
+                break;
+            }
+            case R.id.revLeftBtn: {
+                String cmdString = "V100, L100";
+                mBluetoothService.write(cmdString.getBytes());
+                Log.d(TAG, "outgoing message: " + cmdString);
+                break;
+            }
+            case R.id.revBtn: {
+                String cmdString = "V100, N000";
+                mBluetoothService.write(cmdString.getBytes());
+                Log.d(TAG, "outgoing message: " + cmdString);
+                break;
+            }
+            case R.id.revRightBtn: {
+                String cmdString = "V100, R100";
                 mBluetoothService.write(cmdString.getBytes());
                 Log.d(TAG, "outgoing message: " + cmdString);
                 break;

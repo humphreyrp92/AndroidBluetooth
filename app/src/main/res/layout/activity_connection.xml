@@ -29,9 +29,9 @@
 
     <Button
         android:id="@+id/fwdBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_width"
+        android:layout_marginTop="36dp"
         android:text="FWD"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -40,35 +40,89 @@
 
     <Button
         android:id="@+id/leftBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_width"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:text="LEFT"
-        app:layout_constraintEnd_toStartOf="@+id/fwdBtn"
-        app:layout_constraintTop_toBottomOf="@+id/fwdBtn" />
+        app:layout_constraintEnd_toStartOf="@+id/neutralBtn"
+        app:layout_constraintTop_toBottomOf="@+id/fwdLeftBtn" />
 
     <Button
         android:id="@+id/rightBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_width"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:text="RIGHT"
-        app:layout_constraintBottom_toBottomOf="@+id/leftBtn"
-        app:layout_constraintStart_toEndOf="@+id/fwdBtn"
-        app:layout_constraintTop_toBottomOf="@+id/fwdBtn" />
+        app:layout_constraintStart_toEndOf="@+id/neutralBtn"
+        app:layout_constraintTop_toBottomOf="@+id/fwdRightBtn" />
 
     <Button
         android:id="@+id/revBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_width"
+        android:layout_marginTop="8dp"
         android:text="REV"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/neutralBtn" />
+
+    <Button
+        android:id="@+id/fwdLeftBtn"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_width"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="FWD/LFT"
+        app:layout_constraintEnd_toStartOf="@+id/fwdBtn"
+        app:layout_constraintTop_toBottomOf="@+id/connectingProgressBar" />
+
+    <Button
+        android:id="@+id/fwdRightBtn"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_width"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="36dp"
+        android:text="FWD/RT"
+        app:layout_constraintStart_toEndOf="@+id/fwdBtn"
+        app:layout_constraintTop_toBottomOf="@+id/connectingProgressBar" />
+
+    <Button
+        android:id="@+id/revLeftBtn"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_width"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="REV/LFT"
+        app:layout_constraintEnd_toStartOf="@+id/revBtn"
+        app:layout_constraintTop_toBottomOf="@+id/leftBtn" />
+
+    <Button
+        android:id="@+id/revRightBtn"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_width"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="REV/RT"
+        app:layout_constraintStart_toEndOf="@+id/revBtn"
         app:layout_constraintTop_toBottomOf="@+id/rightBtn" />
+
+    <Button
+        android:id="@+id/neutralBtn"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_width"
+        android:layout_marginTop="8dp"
+        android:text="NEUTRAL"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fwdBtn" />
 </android.support.constraint.ConstraintLayout>
