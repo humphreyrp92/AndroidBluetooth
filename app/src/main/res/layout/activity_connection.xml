@@ -125,4 +125,48 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fwdBtn" />
+
+    <Button
+        android:id="@+id/trimRightBtn"
+        android:layout_width="@dimen/trim_button_width"
+        android:layout_height="@dimen/trim_button_height"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:text="TRIM RIGHT"
+        app:layout_constraintEnd_toEndOf="@+id/revRightBtn"
+        app:layout_constraintTop_toBottomOf="@+id/revRightBtn" />
+
+    <Button
+        android:id="@+id/trimLeftBtn"
+        android:layout_width="@dimen/trim_button_width"
+        android:layout_height="@dimen/trim_button_height"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="8dp"
+        android:text="TRIM LEFT"
+        app:layout_constraintStart_toStartOf="@+id/revLeftBtn"
+        app:layout_constraintTop_toBottomOf="@+id/revLeftBtn" />
+
+    <Button
+        android:id="@+id/trimUpBtn"
+        android:layout_width="@dimen/trim_button_height"
+        android:layout_height="@dimen/trim_button_width"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="UP"
+        app:layout_constraintEnd_toStartOf="@+id/fwdLeftBtn"
+        app:layout_constraintTop_toTopOf="@+id/fwdLeftBtn" />
+
+    <Button
+        android:id="@+id/trimDownBtn"
+        android:layout_width="@dimen/trim_button_height"
+        android:layout_height="@dimen/trim_button_width"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="32dp"
+        android:text="DOWN"
+        app:layout_constraintBottom_toBottomOf="@+id/revLeftBtn"
+        app:layout_constraintEnd_toStartOf="@+id/revLeftBtn" />
 </android.support.constraint.ConstraintLayout>
