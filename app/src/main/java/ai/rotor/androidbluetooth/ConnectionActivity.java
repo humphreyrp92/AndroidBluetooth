@@ -120,19 +120,19 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fwdLeftBtn: {
-                String cmdString = "F010, L100";
+                String cmdString = "F015, L100";
                 mBluetoothService.write(cmdString.getBytes());
                 Log.d(TAG, "outgoing message: " + cmdString);
                 break;
             }
             case R.id.fwdBtn: {
-                String cmdString = "F010, N000";
+                String cmdString = "F015, N000";
                 mBluetoothService.write(cmdString.getBytes());
                 Log.d(TAG, "outgoing message: " + cmdString);
                 break;
             }
             case R.id.fwdRightBtn: {
-                String cmdString = "F010, R100";
+                String cmdString = "F015, R100";
                 mBluetoothService.write(cmdString.getBytes());
                 Log.d(TAG, "outgoing message: " + cmdString);
                 break;
@@ -156,19 +156,19 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
                 break;
             }
             case R.id.revLeftBtn: {
-                String cmdString = "V100, L100";
+                String cmdString = "V015, L100";
                 mBluetoothService.write(cmdString.getBytes());
                 Log.d(TAG, "outgoing message: " + cmdString);
                 break;
             }
             case R.id.revBtn: {
-                String cmdString = "V100, N000";
+                String cmdString = "V015, N000";
                 mBluetoothService.write(cmdString.getBytes());
                 Log.d(TAG, "outgoing message: " + cmdString);
                 break;
             }
             case R.id.revRightBtn: {
-                String cmdString = "V100, R100";
+                String cmdString = "V015, R100";
                 mBluetoothService.write(cmdString.getBytes());
                 Log.d(TAG, "outgoing message: " + cmdString);
                 break;
