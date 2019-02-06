@@ -19,9 +19,10 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
     private ProgressBar mProgressBar;
     private TextView mStatusTv;
     private Button mFwdBtn, mFwdLftBtn, mFwdRtBtn, mNeutLftBtn, mNeutBtn, mNeutRtBtn,
-        mRevLftBtn, mRevBtn, mRevRtBtn, mTrimFwdBtn, mTrimBkwdBtn, mTrimRtBtn, mTrimLftBtn;
+        mRevLftBtn, mRevBtn, mRevRtBtn, mTrimFwdBtn, mTrimBkwdBtn, mTrimRtBtn, mTrimLftBtn, mAutoBtn;
     private BluetoothDevice mPairedDevice;
     private BluetoothService mBluetoothService;
+    private boolean autoMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
         mTrimBkwdBtn = (Button) findViewById(R.id.trimDownBtn);
         mTrimLftBtn = (Button) findViewById(R.id.trimLeftBtn);
         mTrimRtBtn = (Button) findViewById(R.id.trimRightBtn);
+        mAutoBtn = (Button) findViewById(R.id.autoBtn);
 
 
         mPairedDevice = getIntent().getExtras().getParcelable("PairedDevice");
@@ -69,6 +71,9 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
         mTrimBkwdBtn.setOnClickListener(this);
         mTrimLftBtn.setOnClickListener(this);
         mTrimRtBtn.setOnClickListener(this);
+        mAutoBtn.setOnClickListener(this);
+
+        autoMode = false;
     }
 
     private void showConnecting() {
@@ -87,9 +92,10 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
         mTrimBkwdBtn.setEnabled(false);
         mTrimLftBtn.setEnabled(false);
         mTrimRtBtn.setEnabled(false);
+        mAutoBtn.setEnabled(false);
     }
 
-    private void showConnected() {
+    private void showManual() {
         mProgressBar.setVisibility(View.INVISIBLE);
         mStatusTv.setText("Connected to " + mPairedDevice.getName());
         mFwdLftBtn.setEnabled(true);
@@ -105,13 +111,32 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
         mTrimBkwdBtn.setEnabled(true);
         mTrimLftBtn.setEnabled(true);
         mTrimRtBtn.setEnabled(true);
+        mAutoBtn.setEnabled(true);
+        mAutoBtn.setText("GO AUTO");
+    }
+
+    private void showAutonomous() {
+        mFwdLftBtn.setEnabled(false);
+        mFwdBtn.setEnabled(false);
+        mFwdRtBtn.setEnabled(false);
+        mNeutLftBtn.setEnabled(false);
+        mNeutBtn.setEnabled(false);
+        mNeutRtBtn.setEnabled(false);
+        mRevLftBtn.setEnabled(false);
+        mRevBtn.setEnabled(false);
+        mRevRtBtn.setEnabled(false);
+        mTrimFwdBtn.setEnabled(false);
+        mTrimBkwdBtn.setEnabled(false);
+        mTrimLftBtn.setEnabled(false);
+        mTrimRtBtn.setEnabled(false);
+        mAutoBtn.setText("GO MANUAL");
     }
 
     BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals("streamsAcquired")) {
-                showConnected();
+                showManual();
             }
         }
     };
@@ -196,6 +221,23 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
                 mBluetoothService.write(cmdString.getBytes());
                 Log.d(TAG, "outgoing message: " + cmdString);
                 break;
+            }
+            case R.id.autoBtn: {
+                if (autoMode) {
+                    String cmdString = "_M";
+                    mBluetoothService.write(cmdString.getBytes());
+                    Log.d(TAG, "outgoing message: " + cmdString);
+                    autoMode = false;
+                    showManual();
+                    break;
+                } else {
+                    String cmdString = "_A";
+                    mBluetoothService.write(cmdString.getBytes());
+                    Log.d(TAG, "outgoing message: " + cmdString);
+                    autoMode = true;
+                    showAutonomous();
+                    break;
+                }
             }
         }
     }
